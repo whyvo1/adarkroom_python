@@ -1,3 +1,8 @@
+'''
+This program is based on MPL-2.0 license.
+This program is open-source at 
+'''
+
 import json, time, os, pygame
 
 pygame.init()
@@ -19,12 +24,13 @@ pygame.display.set_caption("A Dark Room")
 clock = pygame.time.Clock()
 world = util.World()
 
+world.addItem("wood", 10)
+
 if os.path.isfile("saves/save0"):
 	load(world, 0)
 else:
 	world.setLang("zh_cn")
 
-world.addItem("wood", 10)
 world.addTemperatureLogger()
 
 progress = 0
