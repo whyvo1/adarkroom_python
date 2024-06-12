@@ -100,6 +100,14 @@ class CoolableButton(Button):
 			if world.triggerEvent(self.name):
 				self.setOnCool()
 
+class CheckTraps(CoolableButton):
+	def __init__(self, pos):
+		super().__init__("check_traps", pos, [])
+		self.cooltime = 40.0
+
+	def isAvailable(self, world):
+		return time.time() - self.lastClickedTime >= self.cooltime and world.hasBuilding("trap")
+
 class Construct(SimpleButton):
 	def __init__(self, name, pos, itemStacks):
 		super().__init__("construct." + name, pos, itemStacks)

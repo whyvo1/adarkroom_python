@@ -799,7 +799,7 @@ class World:
 				self.__canFurReward = True
 
 			if not self.__justSuffered:
-				if random.random() > 0.8:
+				if random.random() > 0.0:
 					self.sufferEvent()
 			else:
 				self.__justSuffered = False
@@ -1426,7 +1426,7 @@ class TrapDestroyed(Event):
 		super().__init__("trap_destroyed")
 
 	def trigger(self, world):
-		if world.getBuildingCount("trap") > 0:
+		if world.hasBuilding("trap"):
 			world.declineBuilding("trap", int(random.random() * 6) + 1)
 			world.putPopUp(TRAP_DESTROYED_POP_UP0)
 			return True
@@ -1437,13 +1437,12 @@ class TrapDestroyedExplore(Event):
 		super().__init__("trap_destroyed.explore")
 
 	def trigger(self, world):
-		if world.getBuildingCount("trap") > 0:
-			world.addItem("fur", int(random.random() * 10) + 100)
-			world.addItem("flesh", int(random.random() * 10) + 95)
-			world.addItem("tooth", int(random.random() * 4) + 3)
-			world.removePopUp()
-			world.putPopUp(TRAP_DESTROYED_POP_UP1)
-			return True
+		world.addItem("fur", int(random.random() * 10) + 100)
+		world.addItem("flesh", int(random.random() * 10) + 95)
+		world.addItem("tooth", int(random.random() * 4) + 3)
+		world.removePopUp()
+		world.putPopUp(TRAP_DESTROYED_POP_UP1)
+		return True
 		return False
 
 class WoodStolen(Event):
@@ -1576,7 +1575,7 @@ COLLECT_WOOD_BUTTON = button.CoolableButton("collect_wood", (350, 100), 35.0)
 CONSTRUCT_CART_BUTTON = button.Construct("cart", (350, 250), [ItemStack("wood", 40)])
 CONSTRUCT_TRAP_BUTTON = button.ConstructTrap((350, 310))
 CONSTRUCT_HOUSE_BUTTON = button.ConstructHouse((350, 370))
-CHECK_TRAPS_BUTTON = button.CoolableButton("check_traps", (350, 160), 40.0)
+CHECK_TRAPS_BUTTON = button.CheckTraps((350, 160))
 CONSTRUCT_HUNTER_HOUSE_BUTTON = button.Construct("hunter_house", (350, 430), [ItemStack("wood", 200), ItemStack("fur", 30), ItemStack("flesh", 20)])
 CONSTRUCT_TRADING_POST_BUTTON = button.Construct("trading_post", (350, 490), [ItemStack("wood", 400), ItemStack("fur", 80)])
 TRADE_SCALE_BUTTON = button.Trade("scale", (650, 250), [ItemStack("fur", 150)])
