@@ -1,6 +1,6 @@
 '''
 This program is based on MPL-2.0 license.
-This program is open-source at 
+This program is open-source at https://github.com/whyvo1/adarkroom_python
 '''
 
 import json, time, os, pygame
