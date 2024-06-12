@@ -1,4 +1,4 @@
-A Dark Room
+A Dark Room - Python
 ===========
 This program is a python version of the text adventure game [A Dark Room](https://github.com/doublespeakgames/adarkroom/). This game uses [pygame](https://github.com/pygame/pygame).
 
