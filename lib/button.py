@@ -1,5 +1,9 @@
-import time
-import pygame
+'''
+This program is based on MPL-2.0 license.
+This program is open-source at https://github.com/whyvo1/adarkroom_python
+'''
+
+import time, pygame
 from lib import util
 from lib import info
 
@@ -81,10 +85,9 @@ class CoolableButton(Button):
 
 	def render(self, screen, world):
 		string = world.getLangValue(self.getKey())
-		if self.isAvailable(world):
-			text = unifont.render(string, True, (0, 0, 0))
-		else:
-			text = unifont.render(string, True, (130, 130, 130))
+
+		text = unifont.render(string, True, (0, 0, 0)) if self.isAvailable(world) else unifont.render(string, True, (130, 130, 130))
+
 		if self.isAvailable(world):
 			if self.hovered:
 				pygame.draw.rect(screen, (210, 210, 210), self.rect)
@@ -287,16 +290,12 @@ class SaveButton(PopUpButton):
 		return self.name == "save" or world.hasSave(self.no)
 
 	def render(self, screen, world):
-		if self.no == 0:
-			string = world.getLangValue("save_button.auto")
-		else:
-			string = world.getLangValue("save_button.no", str(self.no))
+		string = world.getLangValue("save_button.auto") if self.no == 0 else world.getLangValue("save_button.no", str(self.no))
+		
 		if not world.hasSave(self.no):
 			string += world.getLangValue("save_button.empty_sign")
-		if self.isAvailable(world):
-			text = unifont.render(string, True, (0, 0, 0))
-		else:
-			text = unifont.render(string, True, (130, 130, 130))
+
+		text = unifont.render(string, True, (0, 0, 0)) if self.isAvailable(world) else unifont.render(string, True, (130, 130, 130))
 			
 		if self.isAvailable(world):
 			if self.hovered:
@@ -326,10 +325,8 @@ class LanguageButton(PopUpButton):
 
 	def render(self, screen, world):
 		string = world.getNameInLang(self.name)
-		if self.isAvailable(world):
-			text = unifont.render(string, True, (0, 0, 0))
-		else:
-			text = unifont.render(string, True, (130, 130, 130))
+
+		text = unifont.render(string, True, (0, 0, 0)) if self.isAvailable(world) else unifont.render(string, True, (130, 130, 130))
 			
 		if self.isAvailable(world):
 			if self.hovered:

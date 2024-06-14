@@ -1,3 +1,8 @@
+'''
+This program is based on MPL-2.0 license.
+This program is open-source at https://github.com/whyvo1/adarkroom_python
+'''
+
 import json, random, os
 from lib import button
 from lib import info
@@ -512,10 +517,7 @@ class World:
 	def getButtons(self):
 		buttons = []
 		if self.currentColumn == "house":
-			if self.__fireLit:
-				buttons.append(ADD_FUEL_BUTTON)
-			else:
-				buttons.append(MAKE_FIRE_BUTTON)
+			buttons.append(ADD_FUEL_BUTTON if self.__fireLit else MAKE_FIRE_BUTTON)
 
 			if self.__properties.test("can_construct"):
 				buttons.append(CONSTRUCT_CART_BUTTON)
@@ -700,6 +702,7 @@ class World:
 
 	def lightFire(self):
 		self.__fireLit = True
+		print("oooo")
 		ADD_FUEL_BUTTON.setOnCool()
 
 	def work(self):
@@ -1137,10 +1140,7 @@ class CollectWood(Event):
 		super().__init__("collect_wood")
 
 	def trigger(self, world):
-		if world.hasBuilding("cart"):
-			world.addItem("wood", 50)
-		else:
-			world.addItem("wood", 10)
+		world.addItem("wood", 50 if world.hasBuilding("cart") else 10)
 		world.addLoggerMessage("collect_wood")
 		return True
 
@@ -1177,10 +1177,7 @@ class ConstructTrap(Event):
 		if world.addItem("wood", -10 * (world.getBuildingCount("trap") + 1)):
 			world.addBuilding("trap", 1)
 			world.triggerPropertyOn("can_check_traps")
-			if world.getBuildingCount("trap") < 10:
-				world.addLoggerMessage("construct.trap.success")
-			else:
-				world.addLoggerMessage("construct.trap.success_max")
+			world.addLoggerMessage("construct.trap.success" if world.getBuildingCount("trap") < 10 else "construct.trap.success_max")
 			return True
 		else:
 			world.addLoggerMessage("construct.trap.fail")
@@ -1225,10 +1222,7 @@ class CheckTraps(Event):
 				s.add("flesh")
 			world.addItem("fabric", int(trapCount / 3) + int(random.random() * 5))
 		if trapCount > 4:
-			if random.random() > 0.6:
-				world.addItem("tooth", 2)
-			else:
-				world.addItem("tooth", 1)
+			world.addItem("tooth", 2 if random.random() > 0.6 else 1)
 			s.add("tooth")
 			if random.random() > 0.5:
 				world.addItem("scale", 1)
@@ -1251,20 +1245,12 @@ class CheckTraps(Event):
 		if baitCount > 6:
 			world.addItem("tooth", int(tmp / 2) + 1)
 			world.addItem("scale", int(tmp / 2) + 1)
-		if trapCount < 4:
-			tmp = 0
-		elif trapCount < 8:
-			tmp = 1
-		else:
-			tmp = 2
+		tmp = 0 if trapCount < 4 else 1 if trapCount < 8 else 2
 		l = list(s)
 		string = world.getLangValue("item." + l[0])
 		for i in range(1, len(l)):
 			string += "," + world.getLangValue("item." + l[i])
-		if baitCount > 0:
-			world.addLoggerMessage("check_traps.baited", string, raw = False)
-		else:
-			world.addLoggerMessage("check_traps.common", string, raw = False)
+		world.addLoggerMessage("check_traps.baited" if baitCount > 0 else "check_traps.common", string, raw = False)
 		return True
 
 class SmallGroupCome(Event):

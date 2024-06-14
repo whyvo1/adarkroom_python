@@ -1,3 +1,8 @@
+'''
+This program is based on MPL-2.0 license.
+This program is open-source at https://github.com/whyvo1/adarkroom_python
+'''
+
 import pygame
 
 unifont = pygame.font.Font("lib/unifont-15.1.05.otf", 20)
@@ -197,19 +202,13 @@ class CareerActionBar:
 
 			if career.count > 0:
 				screen.blit(minusButton0, (self.pos[0] + 102, self.pos[1] + dy + 5))
-				if career.count > 9:
-					screen.blit(minusButton1, (self.pos[0] + 84, self.pos[1] + dy + 5))
-				else:
-					screen.blit(minusButton1Dis, (self.pos[0] + 84, self.pos[1] + dy + 5))
+				screen.blit(minusButton1 if career.count > 9 else minusButton1Dis, (self.pos[0] + 84, self.pos[1] + dy + 5))
 			else:
 				screen.blit(minusButton0Dis, (self.pos[0] + 102, self.pos[1] + dy + 5))
 				screen.blit(minusButton1Dis, (self.pos[0] + 84, self.pos[1] + dy + 5))
 			if lc > 0:
 				screen.blit(addButton0, (self.pos[0] + 160, self.pos[1] + dy + 5))
-				if lc > 9:
-					screen.blit(addButton1, (self.pos[0] + 178, self.pos[1] + dy + 5))
-				else:
-					screen.blit(addButton1Dis, (self.pos[0] + 178, self.pos[1] + dy + 5))
+				screen.blit(addButton1 if lc > 9 else addButton1Dis, (self.pos[0] + 178, self.pos[1] + dy + 5))
 			else:
 				screen.blit(addButton0Dis, (self.pos[0] + 160, self.pos[1] + dy + 5))
 				screen.blit(addButton1Dis, (self.pos[0] + 178, self.pos[1] + dy + 5))
@@ -242,14 +241,8 @@ class CareerActionBar:
 class PopUp:
 	def __init__(self, desc = [], buttons = []):
 		self.width = 400
-		if len(desc) == 0:
-			self.desc = []
-		else:
-			self.desc = desc
-		if len(buttons) == 0:
-			self.buttons = []
-		else:
-			self.buttons = buttons
+		self.desc = [] if len(desc) == 0 else desc
+		self.buttons = [] if len(buttons) == 0 else buttons
 
 	def setDesc(self, desc):
 		self.desc = desc
@@ -303,10 +296,7 @@ class PopUp:
 		screen.blit(text, (posX + 20, posY + 20))
 		i = 0
 		for button in self.buttons:
-			if i % 2 == 0:
-				button.setPos((posX + 50, posY + descHeight + 50 + i // 2 * 50))
-			else:
-				button.setPos((posX + 220, posY + descHeight + 50 + i // 2 * 50))
+			button.setPos((posX + (50 if i % 2 == 0 else 220), posY + descHeight + 50 + i // 2 * 50))
 			button.setHovered(button.rect.collidepoint(mousePos))
 			button.render(screen, world)
 			i += 1
@@ -375,20 +365,14 @@ class AdventurePreparationTab:
 			surface.blit(countText, (self.width - int(countText.get_width() / 2) - 100, dy))
 			if c0 >= 1:
 				surface.blit(minusButton0, (self.width - 135, dy + 5))
-				if c0 >= 10:
-					surface.blit(minusButton1, (self.width - 153, dy + 5))
-				else:
-					surface.blit(minusButton1Dis, (self.width - 153, dy + 5))
+				surface.blit(minusButton1 if c0 >= 10 else minusButton1Dis, (self.width - 153, dy + 5))
 			else:
 				surface.blit(minusButton1Dis, (self.width - 153, dy + 5))
 				surface.blit(minusButton0Dis, (self.width - 135, dy + 5))
 
 			if c1 >= 1 and v >= 1:
 				surface.blit(addButton0, (self.width - 77, dy + 5))
-				if c1 >= 10 and v >= 10:
-					surface.blit(addButton1, (self.width - 59, dy + 5))
-				else:
-					surface.blit(addButton1Dis, (self.width - 59, dy + 5))
+				surface.blit(addButton1 if c1 >= 10 and v >= 10 else addButton1Dis, (self.width - 59, dy + 5))
 			else:
 				surface.blit(addButton0Dis, (self.width - 77, dy + 5))
 				surface.blit(addButton1Dis, (self.width - 59, dy + 5))
@@ -488,10 +472,7 @@ class MapSet:
 		while i < 59:
 			j = 0
 			while j < 59:
-				if self.adventure.getPos()[0] == j and self.adventure.getPos()[1] == i:
-					surface.blit(unifontSmall.render("@", True, (0, 0, 0)), (j * 10, i * 12))
-				else:
-					surface.blit(unifontSmall.render(strings[i][j], True, (0, 0, 0)), (j * 10, i * 12))
+				surface.blit(unifontSmall.render("@" if self.adventure.getPos() == (j, i) else strings[i][j], True, (0, 0, 0)), (j * 10, i * 12))
 				j += 1
 			i += 1
 		screen.blit(surface, pos0)
